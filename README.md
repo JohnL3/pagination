@@ -62,3 +62,5 @@ def videos():
     context = paginate(mongo, "videos", 2, 2)
     return render_template('videos.html', context=context)
 ```
+
+![A test image](images/browser.jpg)
