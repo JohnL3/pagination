@@ -46,7 +46,7 @@ return {"results": results, "lis": lis, "nex": nex, "previous": previous, "filte
 
 - results: Items returned from database
 - lis: list of page numbers for pagination in the following form it can also contain page: None to indicate pages before and after as shown next.
-  - [{"pages": None},{"pages": 3}, {"pages": 4, "highlight": True}, {"pages": 5}, {"pages": None},{"pages": 6}]
+  - [{"page": None},{"page": 3}, {"page": 4, "highlight": True}, {"page": 5}, {"page": None},{"page": 6}]
   - highlight: True ... I used this to indicate with css which page i was on 
 - nex: the next page for data .. which goes at end of page numbers
 - previous: the previous page for data that goes before page numbers
