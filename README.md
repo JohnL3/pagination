@@ -44,8 +44,10 @@ The function returns
 return {"results": results, "lis": lis, "nex": nex, "previous": previous, "filter_with": filter_with, 'pages': True}
 ```
 
-- results: Items retured from database
-- lis: list of page numbers for pagination
+- results: Items returned from database
+- lis: list of page numbers for pagination in the following form it can also contain page: None to indicate pages before and after as shown next.
+  - [{"pages": None},{"pages": 3}, {"pages": 4, "highlight": True}, {"pages": 5}, {"pages": None},{"pages": 6}]
+  - highlight: True ... I used this to indicate with css which page i was on 
 - nex: the next page for data .. which goes at end of page numbers
 - previous: the previous page for data that goes before page numbers
 - filter_with: used if filtering database
