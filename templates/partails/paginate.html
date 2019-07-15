@@ -1,0 +1,41 @@
+{% if context.pages %}
+<!-- Pagination section -->
+<div class="pagination-con">
+    <div class="pagination">
+        {% if context.filter_with %}
+            <span><a class="pre-nex" href={{url_for('videos', page=context.previous, filter_with = context.filter_with)}}>Previous</a></span>
+            <div class='special-pages'>
+                {% for itm in context.lis %}
+                    {% if itm.page == None   %}
+                    <span>...</span>
+                    {% else %}
+                        <span {% if itm.highlight %} class="highlight page-num" {% endif %} class="page-num">
+                            <a href={{url_for('videos', 
+                            page=itm.page,
+                            filter_with = context.filter_with)}}>
+                            {{itm.page}}</a>
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            </div>  
+            <span><a class="pre-nex" href={{  url_for('videos', page=context.nex, filter_with = context.filter_with) }}>Next</a></span>
+        {% else %}
+            <span><a class="pre-nex" href={{url_for('videos', page=context.previous )}}>Previous</a></span>
+            <div class='special-pages'>
+                {% for itm in context.lis %}
+                    {% if itm.page == None  %}
+                        <span>...</span>
+                    {% else %}
+                        <span {% if itm.highlight %} class="highlight page-num" {% endif %} class="page-num">
+                            <a href={{url_for('videos', 
+                            page=itm.page)}}>
+                            {{itm.page}}</a>
+                        </span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <span><a class="pre-nex" href={{  url_for('videos', page=context.nex) }}>Next</a></span>
+        {% endif %}
+    </div>
+</div>
+{% endif %}

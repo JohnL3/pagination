@@ -1,0 +1,25 @@
+<!-- Card Container and cards section -->
+<div class='card-container'>
+	<div class="quick-pick"></div>
+	
+		{% for video in context.results %}
+			<div class="card">
+				<p>
+					<span>{{video.name}}</span>
+					<span><a href="{{ video.channel_url }}" target="_blank" rel="noopener">{{video.channel_name}}</a></span>
+				</p>
+				<span><a href="{{ video.video_url }}" target="_blank" rel="noopener">{{ video.video_title }}</a></span>
+				<p>{{ video.description}}</p>
+				
+				<div class="card-options">
+					{% if video.notes %}
+					<span class='disabled' disabled ><a  href="#">Notes</a></span>
+					{% else %}
+					<span class='disabled' disabled ><a class='disabled' >Notes</a></span>
+					{% endif %}
+					<span class="edit-card"><a href={{url_for('edit_card', card_id=video._id)}}>Edit</a></span>
+				</div>
+			</div>
+		{% endfor%}
+</div>
+	

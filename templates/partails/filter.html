@@ -1,0 +1,16 @@
+<!-- Filter -->
+<div class="filter-by">
+    <div class='filter'>
+        <form class='filter-form' action={{ url_for('videos', page=1) }} method='GET'>
+            <input type='text' name="filter_with" required>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+</div>
+
+{% if not context.pages %}
+    <!-- When filter is used and no results found -->
+    <div class="empty">
+        <p>No results found for that filter option</p>
+    </div>
+{% endif %}
