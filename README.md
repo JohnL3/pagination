@@ -28,7 +28,7 @@ I initially created a working version ... but decided there were a few things I 
 
 #### How to use it.
 
-First you need to put the pagination.py file somewhere ... I used a module which I named helper_functions ... in which i place a blank __init__.py file.
+First you need to put the pagination.py file somewhere ... I used a module which I named helper_functions ... in which i place a blank \__init\__.py file.
 And I put the pagination.py file in this module.  
 You would then import the paginate function from this location into your app.py file along with your other imports.    
 you would then use the function in a route that you wanted the data sent to frontend paginated ... as shown below ... passing in the 
