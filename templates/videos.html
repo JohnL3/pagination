@@ -1,0 +1,12 @@
+{% extends "base.html" %} 
+
+{% block title %} 
+ <title>Videos</title>
+{% endblock %}
+
+
+{% block content %}
+	{% include "partails/filter.html" ignore missing %}
+	{% include "partails/card.html" ignore missing %}
+	{% include "partails/paginate.html" ignore missing %}
+{% endblock %}
