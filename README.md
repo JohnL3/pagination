@@ -33,11 +33,12 @@ And I put the pagination.py file in this module.
 You would then import the paginate function from this location into your app.py file along with your other imports.    
 you would then use the function in a route that you wanted the data sent to frontend paginated ... as shown below ... passing in the 
 revelant parameters.  
-The paginate function takes 4 parameters  
+The paginate function takes 5 parameters  
 - mongo connection
 - collection_name: name of the database collection
 - Items_per_page: (default is set to 3)
 - pages_before_after: (default is set to 1)
+- sort_direction: tells funtcion to sort database results by DESCENDING or ASCENDING
 
 The function returns  
 ```python
@@ -59,7 +60,7 @@ from <...> import paginate
 @app.route('videos')
 def videos():
 
-    context = paginate(mongo, "videos", 2, 2)
+    context = paginate(mongo, "videos", 2, 2, 'DESC')
     return render_template('videos.html', context=context)
 ```
 This is how things would look in browser .... 
