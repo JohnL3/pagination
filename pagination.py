@@ -1,11 +1,12 @@
 from flask import request
 from bson.objectid import ObjectId
 
-def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1):
+def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1, sort_direction = 'DESC'):
     """
     This function is used to create the pagination 
     """
-    
+    sort_direction = pymongo.DESCENDING if sort_direction == 'DESC' else pymongo.ASCENDING
+    dec = '$lte' if sort_direction == pymongo.DESCENDING else '$gte'
     filter_by = []
     total_items = 0
     all_items = []
@@ -21,10 +22,10 @@ def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1)
         filter_with = ''
     
     if not filter_with:
-        all_items = list(mongo.db[collection_name].find())
+        all_items = list(mongo.db[collection_name].find().sort('_id', sort_direction))
     else:
         filter_by.append(filter_with)
-        all_items = list(mongo.db[collection_name].find({'$and':[{'tags': {'$in':filter_by }}]}))
+        all_items = list(mongo.db[collection_name].find({'$and':[{'tags': {'$in':filter_by }}]}).sort('_id', sort_direction))
     
     total_items = len(all_items)
 
@@ -45,9 +46,9 @@ def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1)
             first = all_items[index_start_page]['_id']
 
         if not filter_with:
-            results = mongo.db[collection_name].find({"_id":{'$gte': ObjectId(first)}}).limit(items_per_page)
+            results = mongo.db[collection_name].find({"_id":{ dec: ObjectId(first)}}).sort('_id', sort_direction).limit(items_per_page)
         else:
-            results = mongo.db[collection_name].find({'$and':[{"_id":{'$gte': ObjectId(first)}},{'tags': {'$in':filter_by }}]}).limit(items_per_page) 
+            results = mongo.db[collection_name].find({'$and':[{"_id":{ dec: ObjectId(first)}},{'tags': {'$in':filter_by }}]}).sort('_id', sort_direction).limit(items_per_page) 
 
         lis = get_pages(mid_page, total_pages, pages_before_after)
 
