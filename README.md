@@ -42,7 +42,7 @@ The paginate function takes 5 parameters
 
 The function returns  
 ```python
-return {"results": results, "lis": lis, "nex": nex, "previous": previous, "filter_with": filter_with, 'pages': True}
+return {"results": results, "lis": lis, "nex": nex, "previous": previous, "dont_filter": dont_filter, 'pages': True}
 ```
 
 - results: Items returned from database
@@ -51,16 +51,16 @@ return {"results": results, "lis": lis, "nex": nex, "previous": previous, "filte
   - highlight: True ... I used this to indicate with css which page i was on 
 - nex: the next page for data .. which goes at end of page numbers
 - previous: the previous page for data that goes before page numbers
-- filter_with: used if filtering database
-- pages: used to let frontend know it they were items in database to display  and also in conjunction with filter_with to let frontend know if there was filter results
+- pages: used to let frontend know it they were items in database to display
+- dont_filter: a variable used to tell function if a filter is being used
 
 ```python
 from <...> import paginate
 
 @app.route('videos')
 def videos():
-
-    context = paginate(mongo, "videos", 2, 2, 'DESC')
+    # usage if no filter is being applied
+    context = paginate(mongo, "videos", 2, 2, 'DESC', False)
     return render_template('videos.html', context=context)
 ```
 This is how things would look in browser .... 
