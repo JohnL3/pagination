@@ -2,39 +2,37 @@
 <!-- Pagination section -->
 <div class="pagination-con">
     <div class="pagination">
-        {% if context.filter_with %}
-            <span><a class="pre-nex" href={{url_for('videos', page=context.previous, filter_with = context.filter_with)}}>Previous</a></span>
+        {% if not context.dont_filter %}
+            <span><a class="pre-nex" href='?page={{context.previous}}{{qry_str}}'>Previous</a></span>
             <div class='special-pages'>
                 {% for itm in context.lis %}
                     {% if itm.page == None   %}
                     <span>...</span>
                     {% else %}
                         <span {% if itm.highlight %} class="highlight page-num" {% endif %} class="page-num">
-                            <a href={{url_for('videos', 
-                            page=itm.page,
-                            filter_with = context.filter_with)}}>
+                            <a href='?page={{itm.page}}{{qry_str}}'>
                             {{itm.page}}</a>
                         </span>
                     {% endif %}
                 {% endfor %}
             </div>  
-            <span><a class="pre-nex" href={{  url_for('videos', page=context.nex, filter_with = context.filter_with) }}>Next</a></span>
+            <span><a class="pre-nex" href='?page={{context.nex}}{{qry_str}}'>Next</a></span>
         {% else %}
-            <span><a class="pre-nex" href={{url_for('videos', page=context.previous )}}>Previous</a></span>
+            <!--<span><a class="pre-nex" href={{url_for( 'blog_posts', page=context.previous )}}>Previous</a></span>-->
+            <span><a class="pre-nex" href='?page={{context.previous}}'>Previous</a></span>
             <div class='special-pages'>
                 {% for itm in context.lis %}
                     {% if itm.page == None  %}
                         <span>...</span>
                     {% else %}
                         <span {% if itm.highlight %} class="highlight page-num" {% endif %} class="page-num">
-                            <a href={{url_for('videos', 
-                            page=itm.page)}}>
+                            <a href='?page={{itm.page}}'>
                             {{itm.page}}</a>
                         </span>
                     {% endif %}
                 {% endfor %}
             </div>
-            <span><a class="pre-nex" href={{  url_for('videos', page=context.nex) }}>Next</a></span>
+            <span><a class="pre-nex" href='?page={{context.nex}}'>Next</a></span>
         {% endif %}
     </div>
 </div>
