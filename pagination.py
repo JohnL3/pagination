@@ -1,13 +1,14 @@
 from flask import request
 from bson.objectid import ObjectId
+from flask_pymongo import pymongo
 
-def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1, sort_direction = 'DESC'):
+def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1, my_filter={}, sort_direction = 'DESC', dont_filter=True):
     """
     This function is used to create the pagination 
     """
+    
     sort_direction = pymongo.DESCENDING if sort_direction == 'DESC' else pymongo.ASCENDING
     dec = '$lte' if sort_direction == pymongo.DESCENDING else '$gte'
-    filter_by = []
     total_items = 0
     all_items = []
 
@@ -16,16 +17,13 @@ def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1,
             mid_page = int(request.args.get('page'))
         except:
             mid_page = 1
-        filter_with = request.args.get('filter_with')
     else:
         mid_page = 1
-        filter_with = ''
     
-    if not filter_with:
+    if dont_filter:
         all_items = list(mongo.db[collection_name].find().sort('_id', sort_direction))
     else:
-        filter_by.append(filter_with)
-        all_items = list(mongo.db[collection_name].find({'$and':[{'tags': {'$in':filter_by }}]}).sort('_id', sort_direction))
+        all_items = list(mongo.db[collection_name].find(my_filter).sort('_id', sort_direction))
     
     total_items = len(all_items)
 
@@ -45,14 +43,16 @@ def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1,
             index_start_page = 0
             first = all_items[index_start_page]['_id']
 
-        if not filter_with:
-            results = mongo.db[collection_name].find({"_id":{ dec: ObjectId(first)}}).sort('_id', sort_direction).limit(items_per_page)
+        if dont_filter:
+            results = mongo.db[collection_name].find({"_id":{dec: ObjectId(first)}}).sort('_id', sort_direction).limit(items_per_page)
         else:
-            results = mongo.db[collection_name].find({'$and':[{"_id":{ dec: ObjectId(first)}},{'tags': {'$in':filter_by }}]}).sort('_id', sort_direction).limit(items_per_page) 
+            my_filter['$and'][0]['_id']={dec: ObjectId(first)}
+            print('my_filter fun', my_filter)
+            results = mongo.db[collection_name].find(my_filter).sort('_id', sort_direction).limit(items_per_page) 
 
         lis = get_pages(mid_page, total_pages, pages_before_after)
-
-        return {"results": results, "lis": lis, "nex": nex, "previous": previous, "filter_with": filter_with, 'pages': True}
+       
+        return {"results": results, "lis": lis, "nex": nex, "previous": previous, "dont_filter": dont_filter, 'pages': True}
     
     return {'pages': False}
 
@@ -72,7 +72,6 @@ def start_page_index(mid_page, items_per_page, total_items):
     Returns the index for the start page of list containing page numbers
     '''
     start = (mid_page -1) * items_per_page if not (mid_page -1) * items_per_page > total_items else 0
-    
     return start
 
 def get_pages(mid_page, total_pages, pages_before_after):
