@@ -33,12 +33,14 @@ And I put the pagination.py file in this module.
 You would then import the paginate function from this location into your app.py file along with your other imports.    
 you would then use the function in a route that you wanted the data sent to frontend paginated ... as shown below ... passing in the 
 revelant parameters.  
-The paginate function takes 5 parameters  
+The paginate function takes 7 parameters  
 - mongo connection
 - collection_name: name of the database collection
 - Items_per_page: (default is set to 3)
 - pages_before_after: (default is set to 1)
+- my_filter: a dictionary with the filter you want to use ... gets passed into database query
 - sort_direction: tells funtcion to sort database results by DESCENDING or ASCENDING
+- dont_filter: set to True if your not filtering
 
 The function returns  
 ```python
@@ -68,3 +70,46 @@ This is how things would look in browser ....
 
 This is how the pagination would look  
 ![A test image](images/pagination.jpg)
+
+```python
+from <...> import paginate
+
+@app.route('videos')
+def videos():
+    '''
+    When filtering you need to create the query and pass it into function
+    You need to pass down a string in the render_template to add the filter as arguments to the pages href
+    below is one way to do it ... 
+    '''
+    filter_and = dict(request.args.to_dict())
+    try:
+        del filter_and['page']
+    except:
+        pass
+    
+    if len(filter_and) > 0:
+        my_filter = {'$and':[filter_and]}
+        qry_str = ''
+
+        try:
+            filter_in = request.args.getlist('tags_in')
+            del filter_and['tags_in']
+            for itm in filter_in:
+                qry_str+= '&tags_in=' + itm
+
+            my_filter['$and'].append({'tags': {'$in': filter_in}})
+        except:
+            pass
+
+        for k,v in filter_and.items():
+            qry_str+= '&' + k + '=' + v
+        
+        filter_with = {'qry_str': qry_str}
+
+        context = paginate(mongo, "videos", 2, 2, my_filter,'ASC', False)
+        return render_template('videos.html', context=context, **filter_with)
+    else:
+        # usage if no filter is being applied
+        context = paginate(mongo, "videos", 2, 2, 'DESC', False)
+    return render_template('videos.html', context=context)
+```
