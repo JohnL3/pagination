@@ -13,6 +13,7 @@ I initially created a working version ... but decided there were a few things I 
 
 #### Items in files
 
+- I have added a basic app.py file, showing how I set up pymongo and how the basic routes would look
 - repository comes with folder named helper_functions containing the pagination.py file ... this contains the code for the pagination. And alos a function called filtering
 - templates folder ( these are not required ... but can be used saving you having to create ones from scratch )
   - Within the templates folder there is a partails folder containg small html sections that can be included in your html page
