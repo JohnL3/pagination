@@ -2,6 +2,39 @@ from flask import request
 from bson.objectid import ObjectId
 from flask_pymongo import pymongo
 
+
+def filtering(mongo, req):
+    filter_and = dict(req.args.to_dict())
+
+    try:
+        del filter_and['page']
+    except:
+        pass
+
+    if len(filter_and) > 0:
+        my_filter = {'$and':[filter_and]}
+        qry_str = ''
+
+        try:
+            filter_in = request.args.getlist('filter_with')
+            filter_in[0] = filter_in[0].lower()
+            del filter_and['filter_with']
+            for itm in filter_in:
+                qry_str+= f'&filter_with={itm.lower()}'
+            my_filter['$and'].append({'tags': {'$in': filter_in}})
+        except:
+            pass
+
+        for k,v in filter_and.items():
+            qry_str += f'&{k}={v.lower()}'
+
+        filter_with = {'qry_str': qry_str}
+        context = paginate(mongo, "videos", 2, 2, my_filter,'ASC', False)
+        return (context, True, filter_with)
+    else:
+        context = paginate(mongo, "videos", 2, 2, 'ASC', False)
+        return (context, False)
+
 def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1, my_filter={}, sort_direction = 'DESC', dont_filter=True):
     """
     This function is used to create the pagination 
