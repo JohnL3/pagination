@@ -56,8 +56,8 @@ return {"results": results, "lis": lis, "nex": nex, "previous": previous, "dont_
   - highlight: True ... I used this to indicate with css which page i was on 
 - nex: the next page for data .. which goes at end of page numbers
 - previous: the previous page for data that goes before page numbers
-- pages: used to let frontend know it they were items in database to display
 - dont_filter: a variable used to tell function if a filter is being used
+- pages: used to let frontend know it they were items in database to display
 
 ```python
 from <...> import paginate, filtering
@@ -73,23 +73,38 @@ def videos():
 The filtering function takes
 - mongo connection
 - request (The flask request)
-- route (The route name eg: index etx)
+- route (The route name eg: index etc...)
 - per_page (default is 2)
 - pages_before_after (default is 1)
 - sort_direction (default is ASC)
+
+This function is used if both pagination and filtering are been done on the same page.
+The request is passed into the function and within the function a check is done to see if filtering is being used or not
+And then a call to the pagination function is made with the relevant details and the result of this is returned
+
+```python 
+# If a filter has been done 
+return (context, True, filter_with)
+# else no filtering has been done
+return (context, False)
+```
 
 ```python
 from <...> import paginate, filtering
 
 @app.route('videos')
 def videos():
-    # usage if filter is being used on page
+    # usage if filter is being used on the page
+
+    # The last 3 parameters are default and can be left out if you want. 
+    # Just set the defaults you want within the filtering function, and then you can leave them out here.
+
     filtered = filtering(mongo, request, 'videos', 2, 1, 'ASC')
     
     if filtered[1]:
-        return render_template('videos.html',  v=True, context=filtered[0], **filtered[2])
+        return render_template('videos.html', context=filtered[0], **filtered[2])
     else:
-        return render_template("videos.html", v=True, context=filtered[0])
+        return render_template("videos.html",  context=filtered[0])
 ```
 
 
