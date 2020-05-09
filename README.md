@@ -13,7 +13,7 @@ I initially created a working version ... but decided there were a few things I 
 
 #### Items in files
 
-- repository comes with the pagination.py file ... this contains the code for the pagination
+- repository comes with the pagination.py file ... this contains the code for the pagination. And alos a function called filtering
 - templates folder ( these are not required ... but can be used saving you having to create ones from scratch )
   - Within the templates folder there is a partails folder containg small html sections that can be included in your html page
   - The most important one being the paginate.html
@@ -30,9 +30,11 @@ I initially created a working version ... but decided there were a few things I 
 
 First you need to put the pagination.py file somewhere ... I used a module which I named helper_functions ... in which i place a blank \_\_init\_\_.py file.
 And I put the pagination.py file in this module.  
-You would then import the paginate function from this location into your app.py file along with your other imports.    
-you would then use the function in a route that you wanted the data sent to frontend paginated ... as shown below ... passing in the 
-revelant parameters.  
+You would then import the paginate function and the filtering function from this location into your app.py file along with your other imports.    
+you would then use the function/s in a route that you wanted the data sent to frontend paginated ... as shown below ... passing in the 
+revelant parameters. 
+If you are only doing pagination you only require the paginate function. If you also wish to do filtering on the same page you would use the filtering function.
+
 The paginate function takes 7 parameters  
 - mongo connection
 - collection_name: name of the database collection
@@ -41,6 +43,7 @@ The paginate function takes 7 parameters
 - my_filter: a dictionary with the filter you want to use ... gets passed into database query
 - sort_direction: tells funtcion to sort database results by DESCENDING or ASCENDING
 - dont_filter: set to True if your not filtering
+
 
 The function returns  
 ```python
@@ -64,7 +67,19 @@ def videos():
     # usage if no filter is being used on page
     context = paginate(mongo, "videos", 2, 2, 'DESC')
     return render_template('videos.html', context=context)
+```
 
+
+The filtering function takes
+- mongo connection
+- request (The flask request)
+- route (The route name eg: index etx)
+- per_page (default is 2)
+- pages_before_after (default is 1)
+- sort_direction (default is ASC)
+
+```python
+from <...> import paginate, filtering
 
 @app.route('videos')
 def videos():
@@ -76,6 +91,8 @@ def videos():
     else:
         return render_template("videos.html", v=True, context=filtered[0])
 ```
+
+
 This is how things would look in browser .... 
 ![A test image](images/browser.jpg)
 
