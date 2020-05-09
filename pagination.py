@@ -3,7 +3,10 @@ from bson.objectid import ObjectId
 from flask_pymongo import pymongo
 
 
-def filtering(mongo, req):
+def filtering(mongo, req, route,  per_page = 2, pages_before_after = 1, sort_direction='ASC'):
+    """
+    This function is used If filter section is on the page as well as pagination 
+    """
     filter_and = dict(req.args.to_dict())
 
     try:
@@ -29,10 +32,10 @@ def filtering(mongo, req):
             qry_str += f'&{k}={v.lower()}'
 
         filter_with = {'qry_str': qry_str}
-        context = paginate(mongo, "videos", 2, 2, my_filter,'ASC', False)
+        context = paginate(mongo, route, 2, pages_before_after, my_filter, sort_direction, False)
         return (context, True, filter_with)
     else:
-        context = paginate(mongo, "videos", 2, 2, 'ASC', False)
+        context = paginate(mongo, route, per_page, pages_before_after, {}, sort_direction)
         return (context, False)
 
 def paginate(mongo, collection_name, items_per_page = 3, pages_before_after = 1, my_filter={}, sort_direction = 'DESC', dont_filter=True):
