@@ -1,0 +1,29 @@
+.pagination-con {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-column-gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pagination {
+    grid-column: 2;
+    font-size: 110%;
+}
+
+.pagination a {
+    color: var(--a-color);
+}
+
+.pagination {
+    display: grid;
+    grid-template-columns: 65px auto auto;
+    grid-column-gap: 10px;
+}
+
+
+
+.highlight a{
+    color: black;
+    font-weight: 900;
+}
