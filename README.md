@@ -13,7 +13,7 @@ I initially created a working version ... but decided there were a few things I 
 
 #### Items in files
 
-- repository comes with the pagination.py file ... this contains the code for the pagination. And alos a function called filtering
+- repository comes with folder named helper_functions containing the pagination.py file ... this contains the code for the pagination. And alos a function called filtering
 - templates folder ( these are not required ... but can be used saving you having to create ones from scratch )
   - Within the templates folder there is a partails folder containg small html sections that can be included in your html page
   - The most important one being the paginate.html
@@ -61,7 +61,7 @@ return {"results": results, "lis": lis, "nex": nex, "previous": previous, "dont_
 - pages: used to let frontend know it they were items in database to display
 
 ```python
-from <...> import paginate
+from helper_functions.pagination import paginate
 
 @app.route('videos')
 def videos():
@@ -91,7 +91,7 @@ return (context, False)
 ```
 
 ```python
-from <...> import paginate, filtering
+from helper_functions.pagination import paginate, filtering
 
 @app.route('videos')
 def videos():
