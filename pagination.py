@@ -32,7 +32,7 @@ def filtering(mongo, req, route,  per_page = 2, pages_before_after = 1, sort_dir
             qry_str += f'&{k}={v.lower()}'
 
         filter_with = {'qry_str': qry_str}
-        context = paginate(mongo, route, 2, pages_before_after, my_filter, sort_direction, False)
+        context = paginate(mongo, route, per_page, pages_before_after, my_filter, sort_direction, False)
         return (context, True, filter_with)
     else:
         context = paginate(mongo, route, per_page, pages_before_after, {}, sort_direction)
