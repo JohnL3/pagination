@@ -22,6 +22,8 @@ I initially created a working version ... but decided there were a few things I 
 - A filter html section 
   - If you want to do a basic filter on a page you also have pagination on just add this using the include on the video.html page.
   - if you dont require you database to be filtered you can leave out the filter.html
+- css
+  - Basic styleing for the pagination section
 
 
 
