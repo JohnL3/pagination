@@ -60,7 +60,7 @@ return {"results": results, "lis": lis, "nex": nex, "previous": previous, "dont_
 - pages: used to let frontend know it they were items in database to display
 
 ```python
-from <...> import paginate, filtering
+from <...> import paginate
 
 @app.route('videos')
 def videos():
@@ -78,7 +78,7 @@ The filtering function takes
 - pages_before_after (default is 1)
 - sort_direction (default is ASC)
 
-This function is used if both pagination and filtering are been done on the same page.
+The filtering function is used if both pagination and filtering are been done on the same page.
 The request is passed into the function and within the function a check is done to see if filtering is being used or not
 And then a call to the pagination function is made with the relevant details and the result of this is returned
 
