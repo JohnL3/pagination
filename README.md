@@ -61,9 +61,20 @@ from <...> import paginate
 
 @app.route('videos')
 def videos():
-    # usage if no filter is being applied
-    context = paginate(mongo, "videos", 2, 2, 'DESC', False)
+    # usage if no filter is being used on page
+    context = paginate(mongo, "videos", 2, 2, 'DESC')
     return render_template('videos.html', context=context)
+
+
+@app.route('videos')
+def videos():
+    # usage if filter is being used on page
+    filtered = filtering(mongo, request, 'videos', 2, 1, 'ASC')
+    
+    if filtered[1]:
+        return render_template('videos.html',  v=True, context=filtered[0], **filtered[2])
+    else:
+        return render_template("videos.html", v=True, context=filtered[0])
 ```
 This is how things would look in browser .... 
 ![A test image](images/browser.jpg)
