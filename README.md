@@ -18,7 +18,7 @@ I initially created a working version ... but decided there were a few things I 
   - Within the templates folder there is a partails folder containg small html sections that can be included in your html page
   - The most important one being the paginate.html
 - Videos.html ... this can be renamed and reused for your main page that you want your pagination on 
-  - you would just add the pagination.html to your main page useing the include statement as shown in file
+  - you would just add the pagination.html to your main page using the include statement as shown in file
 - A filter html section 
   - As I added the ability to also  filter within the pagination function ... 
   - if you dont require you database to be filtered you can leave out the filter.html
