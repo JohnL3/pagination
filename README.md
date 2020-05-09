@@ -57,7 +57,7 @@ return {"results": results, "lis": lis, "nex": nex, "previous": previous, "dont_
 - dont_filter: a variable used to tell function if a filter is being used
 
 ```python
-from <...> import paginate
+from <...> import paginate, filtering
 
 @app.route('videos')
 def videos():
@@ -81,46 +81,3 @@ This is how things would look in browser ....
 
 This is how the pagination would look  
 ![A test image](images/pagination.jpg)
-
-```python
-from <...> import paginate
-
-@app.route('videos')
-def videos():
-    '''
-    When filtering you need to create the query and pass it into function
-    You need to pass down a string in the render_template to add the filter as arguments to the pages href
-    below is one way to do it ... 
-    '''
-    filter_and = dict(request.args.to_dict())
-    try:
-        del filter_and['page']
-    except:
-        pass
-    
-    if len(filter_and) > 0:
-        my_filter = {'$and':[filter_and]}
-        qry_str = ''
-
-        try:
-            filter_in = request.args.getlist('tags_in')
-            del filter_and['tags_in']
-            for itm in filter_in:
-                qry_str+= '&tags_in=' + itm
-
-            my_filter['$and'].append({'tags': {'$in': filter_in}})
-        except:
-            pass
-
-        for k,v in filter_and.items():
-            qry_str+= '&' + k + '=' + v
-        
-        filter_with = {'qry_str': qry_str}
-
-        context = paginate(mongo, "videos", 2, 2, my_filter,'ASC', False)
-        return render_template('videos.html', context=context, **filter_with)
-    else:
-        # usage if no filter is being applied
-        context = paginate(mongo, "videos", 2, 2, 'DESC', False)
-    return render_template('videos.html', context=context)
-```
