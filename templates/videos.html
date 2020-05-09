@@ -6,7 +6,12 @@
 
 
 {% block content %}
+    <!-- If you dont want to filter remove the partails/filter.html -->
 	{% include "partails/filter.html" ignore missing %}
+
+    <!-- You can remove this and create your own -->
 	{% include "partails/card.html" ignore missing %}
+
+    <!-- This is required for the pagination -->
 	{% include "partails/paginate.html" ignore missing %}
 {% endblock %}

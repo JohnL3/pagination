@@ -20,9 +20,8 @@ I initially created a working version ... but decided there were a few things I 
 - Videos.html ... this can be renamed and reused for your main page that you want your pagination on 
   - you would just add the pagination.html to your main page using the include statement as shown in file
 - A filter html section 
-  - As I added the ability to also  filter within the pagination function ... 
+  - If you want to do a basic filter on a page you also have pagination on just add this using the include on the video.html page.
   - if you dont require you database to be filtered you can leave out the filter.html
-  - if you would like to also be able to filter database you will more than likely also have to make some changes to the pagination function ... but I beleive this can easily be done without to much difficulty
 
 
 
@@ -45,7 +44,7 @@ The paginate function takes 7 parameters
 - dont_filter: set to True if your not filtering
 
 
-The function returns  
+The pagination function returns  
 ```python
 return {"results": results, "lis": lis, "nex": nex, "previous": previous, "dont_filter": dont_filter, 'pages': True}
 ```
