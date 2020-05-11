@@ -96,7 +96,7 @@ from helper_functions.pagination import paginate, filtering
 
 @app.route('videos')
 def videos():
-    # usage if filter is being used on the page
+    # usage if filtering is being used on the page as well as pagination
 
     # The last 3 parameters are default and can be left out if you want. 
     # Just set the defaults you want within the filtering function, and then you can leave them out here.
